@@ -1,4 +1,4 @@
-#!/bin/sh -e
+!/bin/sh -e
 #
 # Copyright (C) 2008-2011 Intel
 #
@@ -7,107 +7,9 @@
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-FSTYPE=ext4
+fstype=ext4
 
-# We need 20 Mb for the boot partition
-boot_size=20
-
-# Get a list of hard drives
-hdnamelist=""
-live_dev_name=`cat /proc/mounts | grep ${1%/} | awk '{print $1}'`
-live_dev_name=${live_dev_name#\/dev/}
-# Only strip the digit identifier if the device is not an mmc
-case $live_dev_name in
-    mmcblk*)
-    ;;
-    nvme*)
-    ;;
-    *)
-        live_dev_name=${live_dev_name%%[0-9]*}
-    ;;
-esac
-
-echo "Searching for hard drives ..."
-
-# Some eMMC devices have special sub devices such as mmcblk0boot0 etc
-# we're currently only interested in the root device so pick them wisely
-devices=`ls /sys/block/ | grep -v mmcblk` || true
-mmc_devices=`ls /sys/block/ | grep "mmcblk[0-9]\{1,\}$"` || true
-devices="$devices $mmc_devices"
-
-for device in $devices; do
-    case $device in
-        loop*)
-            # skip loop device
-            ;;
-        sr*)
-            # skip CDROM device
-            ;;
-        ram*)
-            # skip ram device
-            ;;
-        *)
-            # skip the device LiveOS is on
-            # Add valid hard drive name to the list
-            case $device in
-                $live_dev_name*)
-                # skip the device we are running from
-                ;;
-                *)
-                    hdnamelist="$hdnamelist $device"
-                ;;
-            esac
-            ;;
-    esac
-done
-
-TARGET_DEVICE_NAME=""
-for hdname in $hdnamelist; do
-    # Display found hard drives and their basic info
-    echo "-------------------------------"
-    echo /dev/$hdname
-    if [ -r /sys/block/$hdname/device/vendor ]; then
-        echo -n "VENDOR="
-        cat /sys/block/$hdname/device/vendor
-    fi
-    if [ -r /sys/block/$hdname/device/model ]; then
-        echo -n "MODEL="
-        cat /sys/block/$hdname/device/model
-    fi
-    if [ -r /sys/block/$hdname/device/uevent ]; then
-        echo -n "UEVENT="
-        cat /sys/block/$hdname/device/uevent
-    fi
-    echo
-done
-
-# Get user choice
-while true; do
-    echo "Please select an install target or press n to exit ($hdnamelist ): "
-    read answer
-    if [ "$answer" = "n" ]; then
-        echo "Installation manually aborted."
-        exit 1
-    fi
-    for hdname in $hdnamelist; do
-        if [ "$answer" = "$hdname" ]; then
-            TARGET_DEVICE_NAME=$answer
-            break
-        fi
-    done
-    if [ -n "$TARGET_DEVICE_NAME" ]; then
-        break
-    fi
-done
-
-if [ -n "$TARGET_DEVICE_NAME" ]; then
-    echo "Installing image on /dev/$TARGET_DEVICE_NAME ..."
-else
-    echo "No hard drive selected. Installation aborted."
-    exit 1
-fi
-
-device=/dev/$TARGET_DEVICE_NAME
+device=/dev/sda
 
 #
 # The udev automounter can cause pain here, kill it
@@ -130,97 +32,129 @@ if [ ! -L /etc/mtab ] && [ -e /proc/mounts ]; then
 fi
 
 disk_size=$(parted ${device} unit mb print | grep '^Disk .*: .*MB' | cut -d" " -f 3 | sed -e "s/MB//")
+echo "disk_size:       ${disk_size}"
 
-# For GRUB 2 we need separate parition to store stage2 grub image
-# 2Mb value is chosen to align partition for best performance.
-bios_boot_size=2
+bios=${device}1
+echo "bios:        ${bios}"
+grub=${device}2
+echo "grub:        ${grub}"
+roota=${device}3
+echo "rootfs (A):  ${roota}"
+rootb=${device}4
+echo "rootfs (B):  ${rootb}"
+data=${device}5
+echo "data:        ${data}"
 
-rootfs_size=$((disk_size-bios_boot_size-boot_size))
+echo "disk_size:   ${disk_size}"
 
-boot_start=$((bios_boot_size))
-rootfs_start=$((bios_boot_size+boot_size))
-rootfs_end=$((rootfs_start+rootfs_size))
+bios_size=2
+echo "bios_size:   ${bios_size}"
 
-# MMC devices are special in a couple of ways
-# 1) they use a partition prefix character 'p'
-# 2) they are detected asynchronously (need rootwait)
-rootwait=""
-part_prefix=""
-if [ ! "${device#/dev/mmcblk}" = "${device}" ] || \
-   [ ! "${device#/dev/nvme}" = "${device}" ]; then
-    part_prefix="p"
-    rootwait="rootwait"
-fi
+grub_size=32
+echo "grub_size:   ${grub_size}"
 
-# USB devices also require rootwait
-if [ -n `readlink /dev/disk/by-id/usb* | grep $TARGET_DEVICE_NAME` ]; then
-    rootwait="rootwait"
-fi
+rootfs_size=2048
+echo "rootfs_size: ${rootfs_size}"
 
-bios_boot=${device}${part_prefix}1
-bootfs=${device}${part_prefix}2
-rootfs=${device}${part_prefix}3
+grub_start=$((bios_size))
+echo "grub_start:  ${grub_start}"
+grub_end=$((grub_start + grub_size))
+echo "grub_end:    ${grub_end}"
 
-echo "*****************"
-echo "BIOS boot partition size: $bios_boot_size MB ($bios_boot)"
-echo "Boot partition size:   $boot_size MB ($bootfs)"
-echo "Rootfs partition size: $rootfs_size MB ($rootfs)"
-echo "*****************"
+roota_start=$((grub_end))
+echo "roota_start: ${roota_start}"
+roota_end=$((roota_start + rootfs_size))
+echo "roota_end:   ${roota_end}"
+
+rootb_start=$((roota_start + rootfs_size))
+echo "rootb_start: ${rootb_start}"
+rootb_end=$((rootb_start + rootfs_size))
+echo "rootb_end:   ${rootb_end}"
+
+data_start=$((rootb_end))
+echo "data_start:  ${data_start}"
+data_end=$disk_size
+echo "data_end:    ${data_end}"
+
+echo "Proceed with installation to ${device}"
+read answer
+
+case "${answer}" in
+    "Nn*" )
+        exit 1
+        ;;
+esac
+
 echo "Deleting partition table on ${device} ..."
-dd if=/dev/zero of=${device} bs=512 count=35
+dd if=/dev/zero of=${device} bs=512 count=64
 
 echo "Creating new partition table on ${device} ..."
-parted ${device} mktable gpt
+parted ${device} mklabel gpt
 
-echo "Creating BIOS boot partition on $bios_boot"
-parted ${device} mkpart bios_boot 0% $bios_boot_size
+echo "Creating BIOS boot partition on $bios"
+parted ${device} mkpart bios_boot 0% $bios_size
 parted ${device} set 1 bios_grub on
 
-echo "Creating boot partition on $bootfs"
-parted ${device} mkpart boot ${FSTYPE} $boot_start $boot_size
+echo "Creating boot partition on $grub"
+parted ${device} mkpart boot $fstype $grub_start $grub_end
 
-echo "Creating rootfs partition on $rootfs"
-parted ${device} mkpart root ${FSTYPE} $rootfs_start $rootfs_end
+echo "Creating rootfs A partition on $roota"
+parted ${device} mkpart roota $fstype $roota_start $roota_end
+
+echo "Creating rootfs B partition on $rootb"
+parted ${device} mkpart rootb $fstype $rootb_start $rootb_end
+
+echo "Creating data partition on $data"
+parted ${device} mkpart data $fstype $data_start $data_end
 
 parted ${device} print
 
-echo "Formatting $bootfs to ${FSTYPE}..."
-mkfs.${FSTYPE} $bootfs
+echo "Formatting $grub to ${fstype}..."
+mkfs.${fstype} $grub
 
-echo "Formatting $rootfs to ${FSTYPE}..."
-mkfs.${FSTYPE} $rootfs
+echo "Formatting $roota to ${fstype}..."
+mkfs.${fstype} $roota
+
+echo "Formatting $rootb to ${fstype}..."
+mkfs.${fstype} $rootb
+
+echo "Formatting $data to ${fstype}..."
+mkfs.${fstype} $data
 
 mkdir /tgt_root
 mkdir /src_root
 mkdir -p /boot
 
 # Handling of the target root partition
-echo "Mounting $rootfs at /tgt_root"
-mount -t ${FSTYPE} $rootfs /tgt_root
+echo "Mounting $roota at /tgt_root"
+mount -t ${fstype} $roota /tgt_root
 
+# mount -o rw,loop,noatime,nodiratime /run/media/sdb/rootfs.img at /src_root
+# gives warnings
 echo "Mounting /run/media/$1/$2 at /src_root"
 mount -o rw,loop,noatime,nodiratime /run/media/$1/$2 /src_root
 
 echo "Copying rootfs files..."
 cp -a /src_root/* /tgt_root
+
 if [ -d /tgt_root/etc/ ] ; then
-    bootdev=${bootfs}
-    echo "$bootdev              /boot            ${FSTYPE}       defaults              1  2" >> /tgt_root/etc/fstab
+    echo "$grub              /boot            ${fstype}       defaults              1  2" >> /tgt_root/etc/fstab
+
     # We dont want udev to mount our root device while we're booting...
     if [ -d /tgt_root/etc/udev/ ] ; then
         echo "${device}" >> /tgt_root/etc/udev/mount.blacklist
     fi
 fi
+
 umount /tgt_root
 umount /src_root
 
 # Handling of the target boot partition
-mount $bootfs /boot
-echo "Preparing boot partition..."
+# gives the same warnings
+mount $grub /boot
+echo "Preparing grub boot partition..."
 if [ -f /etc/grub.d/00_header ] ; then
     echo "Preparing custom grub2 menu..."
-    root_part_uuid=$(blkid -o value -s PARTUUID ${rootfs})
-    boot_uuid=$(blkid -o value -s UUID ${bootfs})
     GRUBCFG="/boot/grub/grub.cfg"
     mkdir -p $(dirname $GRUBCFG)
     cat >$GRUBCFG <<_EOF
@@ -234,6 +168,7 @@ menuentry "Linux" {
 _EOF
     chmod 0444 $GRUBCFG
 fi
+
 grub-install ${device}
 
 cp /run/media/$1/vmlinuz /boot/
