@@ -3,7 +3,7 @@
 MACHINE=s10e
 
 if [ "x${1}" = "x" ]; then
-	echo -e "\nUsage: ${0} <block device> [ <image-name> ]\n"
+	echo "Usage: ${0} <block device> [ <image-name> ]\n"
 	exit 0
 fi
 
@@ -14,10 +14,10 @@ else
 fi
 
 if [ -z "$OETMP" ]; then
-	echo -e "\nWorking from local directory"
+	echo "Working from local directory"
 	SRCDIR=.
 else
-	echo -e "\nOETMP: $OETMP"
+	echo "OETMP: $OETMP"
 
 	if [ ! -d ${OETMP}/deploy/images/${MACHINE} ]; then
 		echo "Directory not found: ${OETMP}/deploy/images/${MACHINE}"
