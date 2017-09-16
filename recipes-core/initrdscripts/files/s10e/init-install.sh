@@ -76,11 +76,16 @@ echo "data_start:  ${data_start}"
 data_end=$disk_size
 echo "data_end:    ${data_end}"
 
-echo "Proceed with installation to ${device}"
+answer_default="Y"
+echo "Continue installation to ${device} (Y,n): "
 read answer
+answer="${answer:-$answer_default}"
 
 case "${answer}" in
-    "Nn*" )
+    [Yy]*)
+        ;;
+
+    *)
         exit 1
         ;;
 esac
@@ -110,16 +115,16 @@ parted ${device} mkpart data $fstype $data_start $data_end
 parted ${device} print
 
 echo "Formatting $grub to ${fstype}..."
-mkfs.${fstype} $grub
+mkfs.${fstype} -q -F $grub
 
 echo "Formatting $roota to ${fstype}..."
-mkfs.${fstype} $roota
+mkfs.${fstype} -q -F $roota
 
 echo "Formatting $rootb to ${fstype}..."
-mkfs.${fstype} $rootb
+mkfs.${fstype} -q -F $rootb
 
 echo "Formatting $data to ${fstype}..."
-mkfs.${fstype} $data
+mkfs.${fstype} -q -F $data
 
 mkdir /tgt_root
 mkdir /src_root
@@ -146,6 +151,9 @@ if [ -d /tgt_root/etc/ ] ; then
     fi
 fi
 
+echo "Copying vmlinuz to target root..."
+cp /run/media/$1/vmlinuz /tgt_root/
+
 umount /tgt_root
 umount /src_root
 
@@ -162,7 +170,7 @@ set default="0"
 set timeout="5"
 
 menuentry "Linux" {
-    set root=(hd0,2)
+    set root=(hd0,3)
     linux /vmlinuz consoleblank=0 root=/dev/sda3 rootwait rw
 }
 _EOF
@@ -170,8 +178,6 @@ _EOF
 fi
 
 grub-install ${device}
-
-cp /run/media/$1/vmlinuz /boot/
 
 umount /boot
 
