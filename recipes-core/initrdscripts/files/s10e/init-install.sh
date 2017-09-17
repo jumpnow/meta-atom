@@ -171,7 +171,7 @@ set timeout="5"
 
 menuentry "Linux" {
     set root=(hd0,3)
-    linux /vmlinuz consoleblank=0 root=/dev/sda3 rootwait rw
+    linux /vmlinuz consoleblank=0 root=/dev/sda3 rootfstype=ext4 rootwait rw
 }
 _EOF
     chmod 0444 $GRUBCFG
