@@ -16,6 +16,7 @@ CORE_OS = " \
 KERNEL_EXTRA_INSTALL = " \
     kernel-modules \
     linux-firmware \
+    linux-firmware-b43 \
 "
 
 WIFI_SUPPORT = " \
@@ -69,6 +70,7 @@ EXTRA_TOOLS_INSTALL = " \
     less \
     netcat \
     parted \
+    pciutils \
     procps \
     sysfsutils \
     tcpdump \
