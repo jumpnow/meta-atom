@@ -72,6 +72,7 @@ EXTRA_TOOLS_INSTALL = " \
     parted \
     pciutils \
     procps \
+    root-upgrader \
     sysfsutils \
     tcpdump \
     unzip \
