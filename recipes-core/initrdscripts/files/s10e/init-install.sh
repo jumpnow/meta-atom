@@ -169,9 +169,14 @@ if [ -f /etc/grub.d/00_header ] ; then
 set default="0"
 set timeout="5"
 
-menuentry "Linux" {
+menuentry "Linux A" {
     set root=(hd0,3)
     linux /vmlinuz consoleblank=0 root=/dev/sda3 rootfstype=ext4 rootwait rw
+}
+
+menuentry "Linux B" {
+    set root=(hd0,4)
+    linux /vmlinuz consoleblank=0 root=/dev/sda4 rootfstype=ext4 rootwait rw
 }
 _EOF
     chmod 0444 $GRUBCFG
