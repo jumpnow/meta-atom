@@ -25,7 +25,7 @@ MACHINE = "s10e"
 #DEFAULTTUNE = "core2-64"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-stable"
-PREFERRED_VERSION_linux-stable = "4.9.%"
+PREFERRED_VERSION_linux-stable = "4.13.%"
 
 #DL_DIR = "${HOME}/oe-sources"
 
