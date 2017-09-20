@@ -106,6 +106,14 @@ cp /etc/ssh/*key* /mnt/etc/ssh/
 echo "Copying hostname to new root"
 cp /etc/hostname /mnt/etc/hostname
 
+echo "Copying /etc/network/interfaces to new root"
+cp /etc/network/interfaces /mnt/etc/network/interfaces
+
+if [ -f /etc/wpa_supplicant.conf ]; then
+    echo "Copying /etc/wpa_supplicant.conf to new root"
+    cp /etc/wpa_supplicant.conf /mnt/etc/wpa_supplicant.conf
+fi
+
 umount ${upgrade_root}
 
 if [ -f /boot/grub/grub.cfg ]; then
