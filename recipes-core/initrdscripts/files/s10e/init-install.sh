@@ -166,8 +166,17 @@ if [ -f /etc/grub.d/00_header ] ; then
     GRUBCFG="/boot/grub/grub.cfg"
     mkdir -p $(dirname $GRUBCFG)
     cat >$GRUBCFG <<_EOF
-set default="0"
-set timeout="5"
+if [ -s "${prefix}/grubenv" ]; then
+    load_env
+fi
+
+if [ -z "${default}" ]; then
+    set default=0
+fi
+
+if [ -z "${timeout}" ]; then
+    set timeout=5
+fi
 
 menuentry "Linux A" {
     set root=(hd0,3)

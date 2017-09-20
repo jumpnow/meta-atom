@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 SRC_URI = "file://upgrade \
           "
-PR = "r1"
+PR = "r2"
 
 S = "${WORKDIR}"
 
@@ -16,4 +16,4 @@ do_install_append () {
 
 FILES_${PN} = "${bindir}"
 
-RDEPENDS_${PN} = "coreutils e2fsprogs-mke2fs util-linux" 
+RDEPENDS_${PN} = "coreutils e2fsprogs-mke2fs grub-editenv util-linux"

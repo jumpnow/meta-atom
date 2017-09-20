@@ -32,8 +32,6 @@ image=${1}
 
 current_root=`findmnt -n -o SOURCE /`
 
-echo "Current root: ${current_root}"
-
 if [ "${current_root}" = "/dev/sda3" ]; then
     upgrade_root="/dev/sda4"
     root_name="rootb"
@@ -46,9 +44,8 @@ else
 fi
 
 echo "Image: ${image}"
+echo "Current root: ${current_root}"
 echo "Upgrade root: ${upgrade_root}"
-echo "New grub default: ${grub_default}"     
-echo "Root part name: ${root_name}"
 
 prompt_to_continue ${upgrade_root}
 
@@ -116,16 +113,32 @@ fi
 
 umount ${upgrade_root}
 
-if [ -f /boot/grub/grub.cfg ]; then
-    echo "Updating /boot/grub/grub.cfg default"
+if [ -x /usr/bin/grub-editenv ]; then
+    if [ ! -f /boot/grub/grubenv ]; then
+        echo "Creating a new grubenv file"
+
+        grub-editenv /boot/grub/grubenv create
+
+        if [ $? -ne 0 ]; then
+            echo "Failed to create /boot/grub/grubenv"
+            exit 1
+        fi
+    fi
+
+    echo "Updating the grubenv file"
 
     if [ "${root_name}" = "roota" ]; then
-        sed -i "s/^set default.*/set default=\"0\"/" /boot/grub/grub.cfg
+        grub-editenv /boot/grub/grubenv set default=0 fallback=1 timeout=5
     else
-        sed -i "s/^set default.*/set default=\"1\"/" /boot/grub/grub.cfg
+        grub-editenv /boot/grub/grubenv set default=1 fallback=0 timeout=5
+    fi
+
+    if [ $? -ne 0 ]; then
+        echo "Failed to update /boot/grub/grubenv"
+        exit 1
     fi
 else
-    echo "Failed to find /boot/grub/grub.cfg"
+    echo "Failed to find /usr/bin/grub-editenv"
     echo "Grub default was not changed"
     echo "Select new system manually at grub prompt"
 fi
