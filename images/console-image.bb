@@ -63,6 +63,7 @@ EXTRA_TOOLS_INSTALL = " \
     bzip2 \
     dosfstools \
     e2fsprogs-mke2fs \
+    e2fsprogs-tune2fs \
     ethtool \
     findutils \
     i2c-tools \
