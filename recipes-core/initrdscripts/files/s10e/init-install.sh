@@ -143,8 +143,6 @@ echo "Copying rootfs files..."
 cp -a /src_root/* /tgt_root
 
 if [ -d /tgt_root/etc/ ] ; then
-    echo "$grub              /boot            ${fstype}       defaults              1  2" >> /tgt_root/etc/fstab
-
     # We dont want udev to mount our root device while we're booting...
     if [ -d /tgt_root/etc/udev/ ] ; then
         echo "${device}" >> /tgt_root/etc/udev/mount.blacklist
@@ -166,15 +164,15 @@ if [ -f /etc/grub.d/00_header ] ; then
     GRUBCFG="/boot/grub/grub.cfg"
     mkdir -p $(dirname $GRUBCFG)
     cat >$GRUBCFG <<_EOF
-if [ -s "${prefix}/grubenv" ]; then
+if [ -s "\${prefix}/grubenv" ]; then
     load_env
 fi
 
-if [ -z "${default}" ]; then
+if [ -z "\${default}" ]; then
     set default=0
 fi
 
-if [ -z "${timeout}" ]; then
+if [ -z "\${timeout}" ]; then
     set timeout=5
 fi
 
