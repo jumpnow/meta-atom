@@ -3,12 +3,19 @@ HOMEPAGE = "http://www.jumpnowtek.com"
 
 require console-image.bb
 
-SDL2 = " \
-    libsdl2 \
-    libsdl2-dev \
-    libsdl2-image \
-    libsdl2-image-dev \
-    sdl2-env \
+ALSA += " \
+    libasound \
+    libavcodec \
+    libavdevice \
+    libavfilter \
+    libavformat \
+    libavutil \
+    libpostproc \
+    libswresample \
+    libswscale \
+    alsa-conf \
+    alsa-utils \
+    alsa-utils-scripts \
 "
 
 WESTON = " \
@@ -21,7 +28,7 @@ WESTON = " \
 "
 
 IMAGE_INSTALL += " \
-    ${SDL2} \
+    ${ALSA} \
     ${WESTON} \
 "
 

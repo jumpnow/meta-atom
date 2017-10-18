@@ -3,13 +3,23 @@ HOMEPAGE = "http://www.jumpnowtek.com"
 
 require console-image.bb
 
-QT_TOOLS = " \
-    qtbase \
+QT_DEV_TOOLS = " \
     qtbase-dev \
     qtbase-mkspecs \
-    qtbase-plugins \
     qtbase-tools \
+    qtserialport-dev \
+    qtserialport-mkspecs \
+"
+
+QT_LIBS = " \
+    qtbase \
+    qtbase-plugins \
+    qtserialport \
     qt5-env \
+"
+
+QT_APPS = " \
+    tspress \
 "
 
 FONTS = " \
@@ -19,16 +29,10 @@ FONTS = " \
     ttf-bitstream-vera \
 "
 
-QT_SERIALPORT = " \
-    qtserialport-dev \
-    qtserialport-mkspecs \
-"
-
 IMAGE_INSTALL += " \
     ${FONTS} \
-    ${QT_TOOLS} \
-    ${QT_SERIALPORT} \
-    tspress \
+    ${QT_LIBS} \
+    ${QT_APPS} \
 "
 
 export IMAGE_BASENAME = "qt5-image"
