@@ -1,0 +1,93 @@
+#!/bin/sh
+
+grub_partition=/dev/sda2
+grub_mount=/boot
+
+prompt_to_continue()
+{
+    partition=${1}
+    answer_default="N"
+    echo -n "Switch root to partition ${partition} (y/N): "
+    read answer
+    answer="${answer:-$answer_default}"
+
+    case "${answer}" in
+        [Yy]*)
+            ;;
+        *)
+            echo "Aborting switch root"
+            exit 1
+            ;;
+    esac
+}
+
+mount | grep ${grub_partition}
+
+if [ $? -eq 0 ]; then
+    echo "Found grub partition (${grub_partition}) already mounted"
+    echo "This is unexpected. Aborting."
+    exit 1
+fi
+
+current_root=`findmnt -n -o SOURCE /`
+
+if [ "${current_root}" = "/dev/sda3" ]; then
+    switch_root="/dev/sda4"
+    root_name="rootb"
+elif [ "${current_root}" = "/dev/sda4" ]; then
+    switch_root="/dev/sda3"
+    root_name="roota"
+else
+    echo "Root partition is unexpected. Aborting."
+    exit 1
+fi
+
+echo "Current root: ${current_root}"
+echo "Switch root: ${switch_root}"
+
+prompt_to_continue ${switch_root}
+
+echo "Updating grub"
+
+if [ -x /usr/bin/grub-editenv ]; then
+
+    echo "Mounting grub partition ${grub_partition} at ${grub_mount}"
+    mount ${grub_partition} ${grub_mount}
+
+    if [ $? -ne 0 ]; then
+        echo "Failed to mount ${grub_partition}"
+        exit 1
+    fi
+
+    if [ ! -f ${grub_mount}/grub/grubenv ]; then
+        echo "Creating a new grubenv file"
+
+        grub-editenv ${grub_mount}/grub/grubenv create
+
+        if [ $? -ne 0 ]; then
+            echo "Failed to create ${grub_mount}/grub/grubenv"
+            umount ${grub_partition}
+            exit 1
+        fi
+    fi
+
+    echo "Updating the grubenv file"
+
+    if [ "${root_name}" = "roota" ]; then
+        grub-editenv ${grub_mount}/grub/grubenv set default=0 fallback=1 timeout=5
+    else
+        grub-editenv ${grub_mount}/grub/grubenv set default=1 fallback=0 timeout=5
+    fi
+
+    if [ $? -ne 0 ]; then
+        echo "Failed to update ${grub_mount}/grub/grubenv"
+        umount ${grub_partition}
+        exit 1
+    fi
+
+    umount ${grub_partition}
+else
+    echo "Failed to find /usr/bin/grub-editenv"
+fi
+
+echo "Reboot to use the new system"

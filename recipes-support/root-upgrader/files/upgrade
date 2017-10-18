@@ -1,5 +1,8 @@
 #!/bin/sh
 
+grub_partition=/dev/sda2
+grub_mount=/boot
+
 prompt_to_continue()
 {
     partition=${1}
@@ -25,6 +28,15 @@ fi
 
 if [ ! -f ${1} ]; then
     echo "Usage: ${0} <path/to/some-img>.tar.xz"
+    exit 1
+fi
+
+
+mount | grep ${grub_partition}
+
+if [ $? -eq 0 ]; then
+    echo "Found grub partition (${grub_partition}) already mounted"
+    echo "This is unexpected. Aborting."
     exit 1
 fi
 
@@ -103,24 +115,43 @@ cp /etc/ssh/*key* /mnt/etc/ssh/
 echo "Copying hostname to new root"
 cp /etc/hostname /mnt/etc/hostname
 
-echo "Copying /etc/network/interfaces to new root"
-cp /etc/network/interfaces /mnt/etc/network/interfaces
+if [ -f /etc/network/interfaces ]; then
+    echo "Copying /etc/network/interfaces to new root"
+    cp /etc/network/interfaces /mnt/etc/network/interfaces
+fi
 
 if [ -f /etc/wpa_supplicant.conf ]; then
     echo "Copying /etc/wpa_supplicant.conf to new root"
     cp /etc/wpa_supplicant.conf /mnt/etc/wpa_supplicant.conf
 fi
 
+if [ -f /etc/systemd/network/wired.network ]; then
+    echo "Copying /etc/systemd/network/wired.network to new root"
+    cp /etc/systemd/network/wired.network /mnt/etc/systemd/network/wired.network
+fi
+
 umount ${upgrade_root}
 
+echo "Updating grub"
+
 if [ -x /usr/bin/grub-editenv ]; then
-    if [ ! -f /boot/grub/grubenv ]; then
+
+    echo "Mounting grub partition ${grub_partition} at ${grub_mount}"
+    mount ${grub_partition} ${grub_mount}
+
+    if [ $? -ne 0 ]; then
+        echo "Failed to mount ${grub_partition}"
+        exit 1
+    fi
+
+    if [ ! -f ${grub_mount}/grub/grubenv ]; then
         echo "Creating a new grubenv file"
 
-        grub-editenv /boot/grub/grubenv create
+        grub-editenv ${grub_mount}/grub/grubenv create
 
         if [ $? -ne 0 ]; then
-            echo "Failed to create /boot/grub/grubenv"
+            echo "Failed to create ${grub_mount}/grub/grubenv"
+            umount ${grub_partition}
             exit 1
         fi
     fi
@@ -128,15 +159,18 @@ if [ -x /usr/bin/grub-editenv ]; then
     echo "Updating the grubenv file"
 
     if [ "${root_name}" = "roota" ]; then
-        grub-editenv /boot/grub/grubenv set default=0 fallback=1 timeout=5
+        grub-editenv ${grub_mount}/grub/grubenv set default=0 fallback=1 timeout=5
     else
-        grub-editenv /boot/grub/grubenv set default=1 fallback=0 timeout=5
+        grub-editenv ${grub_mount}/grub/grubenv set default=1 fallback=0 timeout=5
     fi
 
     if [ $? -ne 0 ]; then
-        echo "Failed to update /boot/grub/grubenv"
+        echo "Failed to update ${grub_mount}/grub/grubenv"
+        umount ${grub_partition}
         exit 1
     fi
+
+    umount ${grub_partition}
 else
     echo "Failed to find /usr/bin/grub-editenv"
     echo "Grub default was not changed"
