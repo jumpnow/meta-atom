@@ -1,4 +1,4 @@
-!/bin/sh -e
+#!/bin/sh -e
 #
 # Copyright (C) 2008-2011 Intel
 #
@@ -159,11 +159,10 @@ umount /src_root
 # gives the same warnings
 mount $grub /boot
 echo "Preparing grub boot partition..."
-if [ -f /etc/grub.d/00_header ] ; then
-    echo "Preparing custom grub2 menu..."
-    GRUBCFG="/boot/grub/grub.cfg"
-    mkdir -p $(dirname $GRUBCFG)
-    cat >$GRUBCFG <<_EOF
+GRUBCFG="/boot/grub/grub.cfg"
+mkdir -p $(dirname $GRUBCFG)
+
+cat >$GRUBCFG <<_EOF
 if [ -s "\${prefix}/grubenv" ]; then
     load_env
 fi
@@ -178,16 +177,16 @@ fi
 
 menuentry "Linux A" {
     set root=(hd0,3)
-    linux /vmlinuz consoleblank=0 root=/dev/sda3 rootfstype=ext4 rootwait rw
+    linux /vmlinuz consoleblank=0 i8042.noaux root=/dev/sda3 rootfstype=ext4 rootwait rw
 }
 
 menuentry "Linux B" {
     set root=(hd0,4)
-    linux /vmlinuz consoleblank=0 root=/dev/sda4 rootfstype=ext4 rootwait rw
+    linux /vmlinuz consoleblank=0 i8042.noaux root=/dev/sda4 rootfstype=ext4 rootwait rw
 }
 _EOF
-    chmod 0444 $GRUBCFG
-fi
+
+chmod 0444 $GRUBCFG
 
 grub-install ${device}
 
