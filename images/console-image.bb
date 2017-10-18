@@ -70,6 +70,8 @@ EXTRA_TOOLS_INSTALL = " \
     iperf3 \
     less \
     netcat \
+    openvpn \
+    openvpn-sample \
     parted \
     pciutils \
     procps \
