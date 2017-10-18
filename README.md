@@ -10,9 +10,9 @@ This layer depends on:
     revision: HEAD
     commit: dfbdd28
 
-    URI: git://code.qt.io/yocto/meta-qt5.git
-    branch: 5.9
+    URI: https://github.com/meta-qt5/meta-qt5
+    branch: pyro
     revision: HEAD
-    commit: e0db566
+    commit: c6aa602
 
     meta-atom layer maintainer: Scott Ellis <scott@jumpnowtek.com>

@@ -8,10 +8,9 @@ BBFILES ?= ""
 BBLAYERS ?= " \
   ${HOME}/poky-pyro/meta \
   ${HOME}/poky-pyro/meta-poky \
-  ${HOME}/poky-pyro/meta-yocto-bsp \
   ${HOME}/poky-pyro/meta-openembedded/meta-oe \
   ${HOME}/poky-pyro/meta-openembedded/meta-networking \
   ${HOME}/poky-pyro/meta-openembedded/meta-python \
-  ${HOME}/qt5/meta-qt5 \
+  ${HOME}/poky-pyro/meta-qt5 \
   ${HOME}/atom/meta-atom \
 "
