@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 4.13.2 Kernel Configuration
+# Linux/x86 4.13.8 Kernel Configuration
 #
 # CONFIG_64BIT is not set
 CONFIG_X86_32=y
@@ -1584,7 +1584,7 @@ CONFIG_DUMMY=m
 CONFIG_NETCONSOLE=y
 CONFIG_NETPOLL=y
 CONFIG_NET_POLL_CONTROLLER=y
-# CONFIG_TUN is not set
+CONFIG_TUN=y
 # CONFIG_TUN_VNET_CROSS_LE is not set
 # CONFIG_VETH is not set
 CONFIG_VIRTIO_NET=y
