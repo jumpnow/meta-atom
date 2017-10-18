@@ -14,6 +14,7 @@ SDL2 = " \
 WESTON = " \
     libweston-2 \
     weston \
+    weston-config \
     weston-dev \
     weston-examples \
     weston-init \
@@ -25,4 +26,4 @@ IMAGE_INSTALL += " \
     ${WESTON} \
 "
 
-export IMAGE_BASENAME = "weston-qt5-image"
+export IMAGE_BASENAME = "wayland-qt5-image"
