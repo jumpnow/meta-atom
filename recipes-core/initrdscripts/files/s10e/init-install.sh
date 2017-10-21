@@ -53,7 +53,7 @@ echo "bios_size:   ${bios_size}"
 grub_size=32
 echo "grub_size:   ${grub_size}"
 
-rootfs_size=2048
+rootfs_size=4096
 echo "rootfs_size: ${rootfs_size}"
 
 grub_start=$((bios_size))
@@ -89,6 +89,11 @@ case "${answer}" in
         exit 1
         ;;
 esac
+
+#
+# Once again catch anything the automounter had mounted
+#
+umount ${device}* 2> /dev/null || /bin/true
 
 echo "Deleting partition table on ${device} ..."
 dd if=/dev/zero of=${device} bs=512 count=64
