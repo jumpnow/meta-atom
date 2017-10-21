@@ -1,1 +1,2 @@
-PACKAGECONFIG_append = " accessibility eglfs fontconfig gles2 linuxfb"
+PACKAGECONFIG_append = " accessibility fontconfig gles2 linuxfb"
+PACKAGECONFIG_remove = "examples tests"

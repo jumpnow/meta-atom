@@ -1,5 +1,5 @@
 # Local configuration for meta-atom images
-# Yocto Project 2.3.2 Poky distribution [pyro] branch
+# Yocto Project 2.4 Poky distribution [rocko] branch
 # This is a sysvinit system
 
 LICENSE_FLAGS_WHITELIST = "commercial"
@@ -30,7 +30,7 @@ PREFERRED_VERSION_linux-stable = "4.13.%"
 
 #SSTATE_DIR = "/oe7/atom/sstate-cache"
 
-#TMPDIR = "/oe7/atom/tmp-pyro"
+#TMPDIR = "/oe7/atom/tmp-rocko"
 
 DISTRO = "poky"
 

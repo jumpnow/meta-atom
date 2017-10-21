@@ -36,8 +36,6 @@ DEV_SDK_INSTALL = " \
     file \
     g++ \
     g++-symlinks \
-    gdb \
-    gdbserver \
     gcc \
     gcc-symlinks \
     gettext \
@@ -55,7 +53,6 @@ DEV_EXTRAS = " \
     grub-editenv \
     ntp \
     ntp-tickadj \
-    serialecho \
 "
 
 EXTRA_TOOLS_INSTALL = " \
@@ -68,6 +65,7 @@ EXTRA_TOOLS_INSTALL = " \
     findutils \
     i2c-tools \
     iperf3 \
+    iptables \
     less \
     netcat \
     openvpn \
@@ -81,6 +79,7 @@ EXTRA_TOOLS_INSTALL = " \
     unzip \
     util-linux \
     util-linux-blkid \
+    vim \
     wget \
     zip \
 "

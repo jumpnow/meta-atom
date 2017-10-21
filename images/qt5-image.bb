@@ -31,6 +31,7 @@ FONTS = " \
 
 IMAGE_INSTALL += " \
     ${FONTS} \
+    ${QT_DEV_TOOLS} \
     ${QT_LIBS} \
     ${QT_APPS} \
 "
