@@ -1,3 +1,5 @@
+Primarily for a Lenovo Ideapad S10e netbook that I inherited.
+
 This layer depends on:
 
     URI: git://git.yoctoproject.org/poky.git
@@ -14,5 +16,10 @@ This layer depends on:
     branch: rocko
     revision: HEAD
     commit: 2c3ef00
+
+    URI: git://git.yoctoproject.org/meta-security
+    branch: rocko
+    revision: HEAD
+    commit: e1f0ecb
 
     meta-atom layer maintainer: Scott Ellis <scott@jumpnowtek.com>

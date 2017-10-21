@@ -10,7 +10,9 @@ BBLAYERS ?= " \
   ${HOME}/poky-rocko/meta-poky \
   ${HOME}/poky-rocko/meta-openembedded/meta-oe \
   ${HOME}/poky-rocko/meta-openembedded/meta-networking \
+  ${HOME}/poky-rocko/meta-openembedded/meta-perl \
   ${HOME}/poky-rocko/meta-openembedded/meta-python \
   ${HOME}/poky-rocko/meta-qt5 \
+  ${HOME}/poky-rocko/meta-security \
   ${HOME}/atom/meta-atom \
 "
