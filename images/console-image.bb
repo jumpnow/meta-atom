@@ -67,8 +67,8 @@ EXTRA_TOOLS_INSTALL = " \
     iperf3 \
     iptables \
     less \
+    links \
     netcat \
-    nmap \
     openvpn \
     openvpn-sample \
     parted \
@@ -85,12 +85,20 @@ EXTRA_TOOLS_INSTALL = " \
     zip \
 "
 
+SECURITY_TOOLS = " \
+    aircrack-ng \
+    nikto \
+    nmap \
+    scapy \
+"
+
 IMAGE_INSTALL += " \
     ${CORE_OS} \
     ${DEV_SDK_INSTALL} \
     ${DEV_EXTRAS} \
     ${EXTRA_TOOLS_INSTALL} \
     ${KERNEL_EXTRA_INSTALL} \
+    ${SECURITY_TOOLS} \
     ${WIFI_SUPPORT} \
 "
 
