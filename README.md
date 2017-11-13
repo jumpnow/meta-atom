@@ -20,6 +20,6 @@ This layer depends on:
     URI: git://git.yoctoproject.org/meta-security
     branch: rocko
     revision: HEAD
-    commit: e1f0ecb
+    commit: ebed429
 
     meta-atom layer maintainer: Scott Ellis <scott@jumpnowtek.com>
