@@ -182,12 +182,12 @@ fi
 
 menuentry "Linux A" {
     set root=(hd0,3)
-    linux /vmlinuz consoleblank=0 i8042.noaux root=/dev/sda3 rootfstype=ext4 rootwait rw
+    linux /vmlinuz consoleblank=0 i8042.noaux root=/dev/sda3 rootfstype=ext4 rootwait rw quiet
 }
 
 menuentry "Linux B" {
     set root=(hd0,4)
-    linux /vmlinuz consoleblank=0 i8042.noaux root=/dev/sda4 rootfstype=ext4 rootwait rw
+    linux /vmlinuz consoleblank=0 i8042.noaux root=/dev/sda4 rootfstype=ext4 rootwait rw quiet
 }
 _EOF
 
