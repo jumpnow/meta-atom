@@ -7,9 +7,11 @@ IMAGE_LINGUAS = "en-us"
 
 inherit core-image
 
+SPLASH = "psplash-jumpnow"
+
 CORE_OS = " \
     openssh openssh-keygen openssh-sftp-server \
-    psplash \
+    psplash psplash-jumpnow \
     tzdata \
 "
 
@@ -80,7 +82,6 @@ EXTRA_TOOLS_INSTALL = " \
     unzip \
     util-linux \
     util-linux-blkid \
-    vim \
     wget \
     zip \
 "
