@@ -130,6 +130,13 @@ if [ -f /etc/systemd/network/wired.network ]; then
     cp /etc/systemd/network/wired.network /mnt/etc/systemd/network/wired.network
 fi
 
+echo "Checking if we need a /data partition"
+grep sda5 /etc/fstab | grep data
+
+if [ $? -eq 0 ]; then
+    mkdir /mnt/data
+fi
+
 umount ${upgrade_root}
 
 echo "Updating grub"
