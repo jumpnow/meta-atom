@@ -40,7 +40,6 @@ BROWSERS = " \
 
 X11_EXTRAS = " \
     shutdown-desktop \
-    x11vnc \
 "
 
 IMAGE_INSTALL += " \
