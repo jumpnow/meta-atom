@@ -1,0 +1,28 @@
+From 4b96e84aa684fa74f62e7230f36ab7f767106a04 Mon Sep 17 00:00:00 2001
+From: Scott Ellis <scott@jumpnowtek.com>
+Date: Tue, 13 Feb 2018 09:29:30 -0500
+Subject: [PATCH 1/2] Revert "ssb: Disable PCI host for PCI_DRIVERS_GENERIC"
+
+This reverts commit 58eae1416b804d900014d84feadda7195007cc30.
+
+Unable to configure ssb for lenovo s10e b43 wifi
+---
+ drivers/ssb/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/ssb/Kconfig b/drivers/ssb/Kconfig
+index 71c7376..d8e4219 100644
+--- a/drivers/ssb/Kconfig
++++ b/drivers/ssb/Kconfig
+@@ -32,7 +32,7 @@ config SSB_BLOCKIO
+ 
+ config SSB_PCIHOST_POSSIBLE
+ 	bool
+-	depends on SSB && (PCI = y || PCI = SSB) && PCI_DRIVERS_LEGACY
++	depends on SSB && (PCI = y || PCI = SSB)
+ 	default y
+ 
+ config SSB_PCIHOST
+-- 
+2.7.4
+
