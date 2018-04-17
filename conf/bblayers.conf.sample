@@ -14,5 +14,8 @@ BBLAYERS ?= " \
   ${HOME}/poky-rocko/meta-openembedded/meta-python \
   ${HOME}/poky-rocko/meta-qt5 \
   ${HOME}/poky-rocko/meta-security \
+  ${HOME}/poky-rocko/meta-browser \
+  ${HOME}/poky-rocko/meta-java \
+  ${HOME}/syntro/meta-syntro \
   ${HOME}/atom/meta-atom \
 "
