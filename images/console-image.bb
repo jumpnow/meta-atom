@@ -1,16 +1,16 @@
 SUMMARY = "A console development image with some C/C++ dev tools"
 HOMEPAGE = "http://www.jumpnowtek.com"
-LICENSE = "MIT"
 
 IMAGE_FEATURES += "package-management"
 IMAGE_LINGUAS = "en-us"
 
-inherit core-image
+inherit image
 
 SPLASH = "psplash-jumpnow"
 
 CORE_OS = " \
     openssh openssh-keygen openssh-sftp-server \
+    packagegroup-core-boot \
     psplash psplash-jumpnow \
     tzdata \
 "
@@ -35,19 +35,26 @@ DEV_SDK_INSTALL = " \
     cpp \
     cpp-symlinks \
     diffutils \
+    elfutils \
     file \
     g++ \
     g++-symlinks \
     gcc \
     gcc-symlinks \
+    gdb \
     gettext \
     git \
     ldd \
     libstdc++ \
     libstdc++-dev \
     libtool \
+    ltrace \
     make \
+    nasm \
+    perl-modules \
     pkgconfig \
+    python3-modules \
+    strace \
 "
 
 DEV_EXTRAS = " \
