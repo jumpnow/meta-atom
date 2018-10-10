@@ -84,7 +84,6 @@ answer="${answer:-$answer_default}"
 case "${answer}" in
     [Yy]*)
         ;;
-
     *)
         exit 1
         ;;
@@ -106,7 +105,7 @@ parted ${device} mkpart bios_boot 0% $bios_size
 parted ${device} set 1 bios_grub on
 
 echo "Creating boot partition on $grub"
-parted ${device} mkpart boot $fstype $grub_start $grub_end
+parted ${device} mkpart grub $fstype $grub_start $grub_end
 
 echo "Creating rootfs A partition on $roota"
 parted ${device} mkpart roota $fstype $roota_start $roota_end
@@ -115,7 +114,7 @@ echo "Creating rootfs B partition on $rootb"
 parted ${device} mkpart rootb $fstype $rootb_start $rootb_end
 
 echo "Creating data partition on $data"
-parted ${device} mkpart data $fstype $data_start $data_end
+parted ${device} mkpart opt $fstype $data_start $data_end
 
 parted ${device} print
 
@@ -154,8 +153,8 @@ if [ -d /tgt_root/etc/ ] ; then
     fi
 fi
 
-echo "Copying vmlinuz to target root..."
-cp /run/media/$1/vmlinuz /tgt_root/
+# echo "Copying bzImage to target root..."
+# cp /run/media/$1/bzImage /tgt_root/
 
 umount /tgt_root
 umount /src_root
@@ -182,12 +181,12 @@ fi
 
 menuentry "Linux A" {
     set root=(hd0,3)
-    linux /vmlinuz consoleblank=0 i8042.noaux root=/dev/sda3 rootfstype=ext4 rootwait rw quiet
+    linux /boot/bzImage consoleblank=0 i8042.noaux root=/dev/sda3 rootfstype=ext4 rootwait rw quiet
 }
 
 menuentry "Linux B" {
     set root=(hd0,4)
-    linux /vmlinuz consoleblank=0 i8042.noaux root=/dev/sda4 rootfstype=ext4 rootwait rw quiet
+    linux /boot/bzImage consoleblank=0 i8042.noaux root=/dev/sda4 rootfstype=ext4 rootwait rw quiet
 }
 _EOF
 
@@ -199,9 +198,7 @@ umount /boot
 
 sync
 
-echo "Remove your installation media, and press ENTER"
+echo "Power off, remove installation media and reboot"
 
-read enter
+exit 0
 
-echo "Rebooting..."
-reboot -f
