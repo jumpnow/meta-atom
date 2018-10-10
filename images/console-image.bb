@@ -53,6 +53,7 @@ DEV_SDK_INSTALL = " \
     nasm \
     perl-modules \
     pkgconfig \
+    python-modules \
     python3-modules \
     strace \
 "
@@ -118,10 +119,15 @@ disable_bootlogd() {
     echo BOOTLOGD_ENABLE=no > ${IMAGE_ROOTFS}/etc/default/bootlogd
 }
 
+add_opt_dir() {
+    mkdir -p ${IMAGE_ROOTFS}/opt
+}
+
 ROOTFS_POSTPROCESS_COMMAND += " \
     set_local_timezone ; \
     disable_bootlogd ; \
- "
+    add_opt_dir; \
+"
 
 export IMAGE_BASENAME = "console-image"
 
