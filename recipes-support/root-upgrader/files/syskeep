@@ -7,7 +7,7 @@ prompt_to_continue()
 {
     partition=${1}
     answer_default="N"
-    echo -n "Switch root to partition ${partition} (y/N): "
+    echo -n "Keep root partition ${partition} (y/N): "
     read answer
     answer="${answer:-$answer_default}"
 
@@ -32,20 +32,17 @@ fi
 current_root=`findmnt -n -o SOURCE /`
 
 if [ "${current_root}" = "/dev/sda3" ]; then
-    switch_root="/dev/sda4"
-    root_name="rootb"
-elif [ "${current_root}" = "/dev/sda4" ]; then
-    switch_root="/dev/sda3"
     root_name="roota"
+elif [ "${current_root}" = "/dev/sda4" ]; then
+    root_name="rootb"
 else
     echo "Root partition is unexpected. Aborting."
     exit 1
 fi
 
 echo "Current root: ${current_root}"
-echo "Switch root: ${switch_root}"
 
-prompt_to_continue ${switch_root}
+prompt_to_continue ${current_root}
 
 echo "Updating grub"
 

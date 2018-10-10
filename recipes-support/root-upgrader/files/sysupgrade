@@ -1,7 +1,7 @@
 #!/bin/sh
 
 grub_partition=/dev/sda2
-grub_mount=/boot
+grub_mount=/mnt
 
 prompt_to_continue()
 {
@@ -81,7 +81,7 @@ fi
 
 echo "Extracting new root filesystem ${image} to /mnt"
 
-tar -C /mnt -xJf ${image}
+EXTRACT_UNSAFE_SYMLINKS=1 tar -C /mnt -xJf ${image}
 
 if [ $? -ne 0 ]; then
     echo "Error extracting new filesystem"
@@ -96,15 +96,15 @@ if [ ! -f /mnt/boot/bzImage ]; then
     umount ${upgrade_root}
     exit 1
 fi
-
-echo "Copying /mnt/boot/bzImage to /mnt/vmlinuz"
-cp /mnt/boot/bzImage /mnt/vmlinuz
-
-if [ $? -ne 0 ]; then
-    echo "Failed to copy new kernel"
-    umount ${upgrade_root}
-    exit 1
-fi
+#
+#echo "Copying /mnt/boot/bzImage to /mnt/bzImage"
+#cp /mnt/boot/bzImage /mnt/bzImage
+#
+#if [ $? -ne 0 ]; then
+#    echo "Failed to copy new kernel"
+#    umount ${upgrade_root}
+#    exit 1
+#fi
 
 echo "Copying /etc/fstab to new root"
 cp /etc/fstab /mnt/etc/fstab
@@ -130,11 +130,11 @@ if [ -f /etc/systemd/network/wired.network ]; then
     cp /etc/systemd/network/wired.network /mnt/etc/systemd/network/wired.network
 fi
 
-echo "Checking if we need a /data partition"
-grep sda5 /etc/fstab | grep data
+echo "Checking if we need a /opt partition"
+grep sda5 /etc/fstab | grep opt 
 
 if [ $? -eq 0 ]; then
-    mkdir /mnt/data
+    mkdir -p /mnt/opt
 fi
 
 umount ${upgrade_root}
