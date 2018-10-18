@@ -68,6 +68,7 @@ DEV_EXTRAS = " \
 EXTRA_TOOLS_INSTALL = " \
     acpid \
     bzip2 \
+    curl \
     dosfstools \
     e2fsprogs-mke2fs \
     e2fsprogs-tune2fs \
@@ -77,10 +78,7 @@ EXTRA_TOOLS_INSTALL = " \
     iperf3 \
     iptables \
     less \
-    links \
     netcat \
-    openvpn \
-    openvpn-sample \
     parted \
     pciutils \
     procps \
