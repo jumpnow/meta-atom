@@ -1,7 +1,8 @@
 #!/bin/sh
 
 grub_partition=/dev/sda2
-grub_mount=/mnt
+grub_mnt=/mnt
+upgrade_mnt=/mnt
 
 prompt_to_continue()
 {
@@ -70,16 +71,16 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Mounting ${upgrade_root} at /mnt"
+echo "Mounting ${upgrade_root} at ${upgrade_mnt}"
 
-mount ${upgrade_root} /mnt
+mount -t ext4 ${upgrade_root} ${upgrade_mnt}
 
 if [ $? -ne 0 ]; then
     echo "Error mounting new root partition"
     exit 1
 fi
 
-echo "Extracting new root filesystem ${image} to /mnt"
+echo "Extracting ${image} to ${upgrade_mnt}"
 
 EXTRACT_UNSAFE_SYMLINKS=1 tar -C /mnt -xJf ${image}
 
@@ -96,45 +97,15 @@ if [ ! -f /mnt/boot/bzImage ]; then
     umount ${upgrade_root}
     exit 1
 fi
-#
-#echo "Copying /mnt/boot/bzImage to /mnt/bzImage"
-#cp /mnt/boot/bzImage /mnt/bzImage
-#
-#if [ $? -ne 0 ]; then
-#    echo "Failed to copy new kernel"
-#    umount ${upgrade_root}
-#    exit 1
-#fi
 
-echo "Copying /etc/fstab to new root"
-cp /etc/fstab /mnt/etc/fstab
+if [ -x /usr/bin/syshook ]; then
+    echo "Running /usr/bin/syshook"
+    /usr/bin/syshook ${upgrade_mnt}
 
-echo "Copying ssh keys to new root"
-cp /etc/ssh/*key* /mnt/etc/ssh/
-
-echo "Copying hostname to new root"
-cp /etc/hostname /mnt/etc/hostname
-
-if [ -f /etc/network/interfaces ]; then
-    echo "Copying /etc/network/interfaces to new root"
-    cp /etc/network/interfaces /mnt/etc/network/interfaces
-fi
-
-if [ -f /etc/wpa_supplicant.conf ]; then
-    echo "Copying /etc/wpa_supplicant.conf to new root"
-    cp /etc/wpa_supplicant.conf /mnt/etc/wpa_supplicant.conf
-fi
-
-if [ -f /etc/systemd/network/wired.network ]; then
-    echo "Copying /etc/systemd/network/wired.network to new root"
-    cp /etc/systemd/network/wired.network /mnt/etc/systemd/network/wired.network
-fi
-
-echo "Checking if we need a /opt partition"
-grep sda5 /etc/fstab | grep opt 
-
-if [ $? -eq 0 ]; then
-    mkdir -p /mnt/opt
+    if [ $? -ne 0 ]; then
+        umount ${upgrade_root}
+        exit 1
+    fi
 fi
 
 umount ${upgrade_root}
@@ -143,21 +114,21 @@ echo "Updating grub"
 
 if [ -x /usr/bin/grub-editenv ]; then
 
-    echo "Mounting grub partition ${grub_partition} at ${grub_mount}"
-    mount ${grub_partition} ${grub_mount}
+    echo "Mounting grub partition ${grub_partition} at ${grub_mnt}"
+    mount ${grub_partition} ${grub_mnt}
 
     if [ $? -ne 0 ]; then
         echo "Failed to mount ${grub_partition}"
         exit 1
     fi
 
-    if [ ! -f ${grub_mount}/grub/grubenv ]; then
+    if [ ! -f ${grub_mnt}/grub/grubenv ]; then
         echo "Creating a new grubenv file"
 
-        grub-editenv ${grub_mount}/grub/grubenv create
+        grub-editenv ${grub_mnt}/grub/grubenv create
 
         if [ $? -ne 0 ]; then
-            echo "Failed to create ${grub_mount}/grub/grubenv"
+            echo "Failed to create ${grub_mnt}/grub/grubenv"
             umount ${grub_partition}
             exit 1
         fi
@@ -166,13 +137,13 @@ if [ -x /usr/bin/grub-editenv ]; then
     echo "Updating the grubenv file"
 
     if [ "${root_name}" = "roota" ]; then
-        grub-editenv ${grub_mount}/grub/grubenv set default=0 fallback=1 timeout=5
+        grub-editenv ${grub_mnt}/grub/grubenv set default=0 fallback=1 timeout=5
     else
-        grub-editenv ${grub_mount}/grub/grubenv set default=1 fallback=0 timeout=5
+        grub-editenv ${grub_mnt}/grub/grubenv set default=1 fallback=0 timeout=5
     fi
 
     if [ $? -ne 0 ]; then
-        echo "Failed to update ${grub_mount}/grub/grubenv"
+        echo "Failed to update ${grub_mnt}/grub/grubenv"
         umount ${grub_partition}
         exit 1
     fi
