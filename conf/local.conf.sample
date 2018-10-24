@@ -17,7 +17,9 @@ VIRTUAL_RUNTIME_init_manager = "sysvinit"
 MACHINE = "s10e"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-stable"
-PREFERRED_VERSION_linux-stable = "4.14.%"
+
+# default version is 4.19, uncomment to change
+#PREFERRED_VERSION_linux-stable = "4.14.%"
 
 #DL_DIR = "${HOME}/oe-sources"
 #SSTATE_DIR = "/oe7/atom/sstate-cache"
@@ -27,7 +29,16 @@ DISTRO = "poky"
 PACKAGE_CLASSES = "package_ipk"
 SDKMACHINE = "x86_64"
 
-EXTRA_IMAGE_FEATURES = "debug-tweaks"
+# for no root password
+# EXTRA_IMAGE_FEATURES = "debug-tweaks"
+
+# to set a root password
+INHERIT += "extrausers"
+EXTRA_USERS_PARAMS += "usermod -P jumpnowtek root;"
+
+# to force a password change on first login
+INHERIT += "chageusers"
+CHAGE_USERS_PARAMS += "chage -d0 root;"
 
 USER_CLASSES = "image-mklibs image-prelink"
 
