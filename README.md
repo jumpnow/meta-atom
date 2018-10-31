@@ -3,19 +3,14 @@ Primarily for a Lenovo Ideapad S10e netbook
 This layer depends on:
 
     URI: git://git.yoctoproject.org/poky.git
-    branch: sumo
+    branch: thud
 
     URI: git://git.openembedded.org/meta-openembedded
-    branch: sumo
-
-    URI: git://git.yoctoproject.org/meta-security
-    branch: sumo
+    branch: thud
 
 Latest commits:
 
-    poky d240b88
-    meta-openembedded 2bb21ef
-    meta-security 1e4b45c
-
+    poky 84eecb0
+    meta-openembedded f1f11d2
 
 meta-atom layer maintainer: Scott Ellis <scott@jumpnowtek.com>

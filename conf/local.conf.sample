@@ -1,4 +1,4 @@
-# Yocto Project 2.5 Poky distribution [sumo] branch
+# Yocto Project 2.6 Poky distribution [thud] branch
 # This is a sysvinit system
 
 LICENSE_FLAGS_WHITELIST = "commercial"
@@ -23,7 +23,7 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-stable"
 
 #DL_DIR = "${HOME}/oe-sources"
 #SSTATE_DIR = "/oe7/atom/sstate-cache"
-#TMPDIR = "/oe7/atom/tmp-sumo"
+#TMPDIR = "/oe7/atom/tmp-thud"
 
 DISTRO = "poky"
 PACKAGE_CLASSES = "package_ipk"
