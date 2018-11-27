@@ -9,6 +9,7 @@ inherit image
 SPLASH = "psplash-jumpnow"
 
 CORE_OS = " \
+    grub grub-editenv \
     openssh openssh-keygen openssh-sftp-server \
     packagegroup-core-boot \
     psplash psplash-jumpnow \
@@ -57,13 +58,6 @@ DEV_SDK_INSTALL = " \
     strace \
 "
 
-DEV_EXTRAS = " \
-    grub \
-    grub-editenv \
-    ntp \
-    ntp-tickadj \
-"
-
 EXTRA_TOOLS_INSTALL = " \
     acpid \
     bzip2 \
@@ -73,11 +67,13 @@ EXTRA_TOOLS_INSTALL = " \
     e2fsprogs-tune2fs \
     ethtool \
     findutils \
+    firewall \
     i2c-tools \
     iperf3 \
     iptables \
     less \
     netcat \
+    ntp ntp-tickadj \
     nmap \
     parted \
     pciutils \
@@ -97,7 +93,6 @@ EXTRA_TOOLS_INSTALL = " \
 IMAGE_INSTALL += " \
     ${CORE_OS} \
     ${DEV_SDK_INSTALL} \
-    ${DEV_EXTRAS} \
     ${EXTRA_TOOLS_INSTALL} \
     ${KERNEL_EXTRA_INSTALL} \
     ${WIFI_SUPPORT} \
