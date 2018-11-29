@@ -72,7 +72,7 @@ EXTRA_TOOLS_INSTALL = " \
     iperf3 \
     iptables \
     less \
-    netcat \
+    netcat-openbsd \
     ntp ntp-tickadj \
     nmap \
     parted \
