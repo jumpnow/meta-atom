@@ -68,6 +68,7 @@ EXTRA_TOOLS_INSTALL = " \
     ethtool \
     findutils \
     firewall \
+    grep \
     i2c-tools \
     iperf3 \
     iptables \
