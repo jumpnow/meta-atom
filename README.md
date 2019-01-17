@@ -10,7 +10,7 @@ This layer depends on:
 
 Latest commits:
 
-    poky 1cab405
+    poky 7022689
     meta-openembedded 6094ae1
 
 meta-atom layer maintainer: Scott Ellis <scott@jumpnowtek.com>
