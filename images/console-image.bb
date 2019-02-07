@@ -73,6 +73,7 @@ EXTRA_TOOLS_INSTALL = " \
     iperf3 \
     iptables \
     less \
+    lsof \
     netcat-openbsd \
     ntp ntp-tickadj \
     nmap \
