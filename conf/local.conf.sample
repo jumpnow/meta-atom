@@ -1,4 +1,4 @@
-# Yocto Project 2.6 Poky distribution [thud] branch
+# Yocto Project 2.7 Poky distribution [warrior] branch
 # This is a sysvinit system
 
 LICENSE_FLAGS_WHITELIST = "commercial"
@@ -18,12 +18,12 @@ MACHINE = "s10e"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-stable"
 
-# default version is 4.19, uncomment to change
-#PREFERRED_VERSION_linux-stable = "4.14.%"
+# default version is 5.0, uncomment to change
+#PREFERRED_VERSION_linux-stable = "4.19.%"
 
 #DL_DIR = "${HOME}/oe-sources"
 #SSTATE_DIR = "/oe7/atom/sstate-cache"
-#TMPDIR = "/oe7/atom/tmp-thud"
+#TMPDIR = "/oe7/atom/tmp-warrior"
 
 DISTRO = "poky"
 PACKAGE_CLASSES = "package_ipk"

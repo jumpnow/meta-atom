@@ -3,14 +3,14 @@ Primarily for a Lenovo Ideapad S10e netbook
 This layer depends on:
 
     URI: git://git.yoctoproject.org/poky.git
-    branch: thud
+    branch: warrior
 
     URI: git://git.openembedded.org/meta-openembedded
-    branch: thud
+    branch: warrior
 
 Latest commits:
 
-    poky 50f33d3
-    meta-openembedded 4cd3a39
+    poky 1b425a8
+    meta-openembedded 50108c1
 
 meta-atom layer maintainer: Scott Ellis <scott@jumpnowtek.com>
