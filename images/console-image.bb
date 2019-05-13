@@ -22,6 +22,11 @@ KERNEL_EXTRA_INSTALL = " \
     linux-firmware-b43 \
 "
 
+WIREGUARD = " \
+    wireguard-module \
+    wireguard-tools \
+"
+
 WIFI_SUPPORT = " \
     crda \
     iw \
@@ -99,6 +104,7 @@ IMAGE_INSTALL += " \
     ${EXTRA_TOOLS_INSTALL} \
     ${KERNEL_EXTRA_INSTALL} \
     ${WIFI_SUPPORT} \
+    ${WIREGUARD} \
 "
 
 set_local_timezone() {
