@@ -8,8 +8,6 @@ SRC_URI = "file://lp0bsinitvals15.fw \
            file://ucode15.fw \
           "
 
-PR = "r0"
-
 S = "${WORKDIR}"
 
 do_install() {
