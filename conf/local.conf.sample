@@ -1,7 +1,7 @@
 # Yocto Project 2.7 Poky distribution [warrior] branch
 # This is a sysvinit system
 
-# use local version, [warrior] version is broken for 5.1 kernels
+# use local version, [warrior] version is broken for 5.1+ kernels
 BBMASK = "meta-networking/recipes-kernel/wireguard"
 
 LICENSE_FLAGS_WHITELIST = "commercial"
@@ -21,12 +21,12 @@ MACHINE = "s10e"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-stable"
 
-# default version is 5.0, uncomment to change
+# default version is 5.3, uncomment to change
 #PREFERRED_VERSION_linux-stable = "4.19.%"
 
 #DL_DIR = "${HOME}/oe-sources"
-#SSTATE_DIR = "/oe7/atom/sstate-cache"
-#TMPDIR = "/oe7/atom/tmp-warrior"
+#SSTATE_DIR = "/oe4/atom/sstate-cache"
+#TMPDIR = "/oe4/atom/tmp-master"
 
 DISTRO = "poky"
 PACKAGE_CLASSES = "package_ipk"
