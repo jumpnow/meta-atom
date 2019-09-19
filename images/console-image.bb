@@ -16,7 +16,7 @@ CORE_OS = " \
     tzdata \
 "
 
-KERNEL_EXTRA_INSTALL = " \
+KERNEL_EXTRA = " \
     kernel-modules \
     linux-firmware \
     linux-firmware-b43 \
@@ -28,13 +28,13 @@ WIREGUARD = " \
     wireguard-tools \
 "
 
-WIFI_SUPPORT = " \
+WIFI_TOOLS = " \
     crda \
     iw \
     wpa-supplicant \
 "
 
-DEV_SDK_INSTALL = " \
+DEV_SDK = " \
     binutils \
     binutils-symlinks \
     coreutils \
@@ -59,12 +59,11 @@ DEV_SDK_INSTALL = " \
     nasm \
     perl-modules \
     pkgconfig \
-    python-modules \
     python3-modules \
     strace \
 "
 
-EXTRA_TOOLS_INSTALL = " \
+EXTRA_TOOLS = " \
     acpid \
     bzip2 \
     curl \
@@ -99,12 +98,20 @@ EXTRA_TOOLS_INSTALL = " \
     zip \
 "
 
+SECURITY_TOOLS = " \
+    checksec \
+    ncrack \
+    nikto \
+    python3-scapy \
+"
+
 IMAGE_INSTALL += " \
     ${CORE_OS} \
-    ${DEV_SDK_INSTALL} \
-    ${EXTRA_TOOLS_INSTALL} \
-    ${KERNEL_EXTRA_INSTALL} \
-    ${WIFI_SUPPORT} \
+    ${DEV_SDK} \
+    ${EXTRA_TOOLS} \
+    ${KERNEL_EXTRA} \
+    ${SECURITY_TOOLS} \
+    ${WIFI_TOOLS} \
     ${WIREGUARD} \
 "
 
