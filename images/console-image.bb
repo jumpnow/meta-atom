@@ -17,9 +17,11 @@ CORE_OS = " \
 "
 
 KERNEL_EXTRA_INSTALL = " \
+    cryptodev-module \
     kernel-modules \
     linux-firmware \
     linux-firmware-b43 \
+    load-modules \
 "
 
 WIREGUARD = " \
@@ -57,6 +59,7 @@ DEV_SDK_INSTALL = " \
     ltrace \
     make \
     nasm \
+    openssl-bin openssl-conf openssl-dev \
     perl-modules \
     pkgconfig \
     python-modules \
