@@ -1,7 +1,7 @@
-# Yocto Project 2.7 Poky distribution [warrior] branch
+# Yocto Project 2.8 Poky distribution [zeus] branch
 # This is a sysvinit system
 
-# use local version, [warrior] version is broken for 5.1+ kernels
+# use local version, mask meta-openembedded version 
 BBMASK = "meta-networking/recipes-kernel/wireguard"
 
 LICENSE_FLAGS_WHITELIST = "commercial"
@@ -26,7 +26,7 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-stable"
 
 #DL_DIR = "${HOME}/oe-sources"
 #SSTATE_DIR = "/oe4/atom/sstate-cache"
-#TMPDIR = "/oe4/atom/tmp-master"
+#TMPDIR = "/oe4/atom/tmp-zeus"
 
 DISTRO = "poky"
 PACKAGE_CLASSES = "package_ipk"

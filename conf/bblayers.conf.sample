@@ -6,12 +6,12 @@ BBPATH = "${TOPDIR}"
 BBFILES ?= ""
 
 BBLAYERS ?= " \
-  ${HOME}/poky-master/meta \
-  ${HOME}/poky-master/meta-poky \
-  ${HOME}/poky-master/meta-openembedded/meta-oe \
-  ${HOME}/poky-master/meta-openembedded/meta-networking \
-  ${HOME}/poky-master/meta-openembedded/meta-perl \
-  ${HOME}/poky-master/meta-openembedded/meta-python \
-  ${HOME}/poky-master/meta-security \
-  ${HOME}/atom-master/meta-atom \
+  ${HOME}/poky-zeus/meta \
+  ${HOME}/poky-zeus/meta-poky \
+  ${HOME}/poky-zeus/meta-openembedded/meta-oe \
+  ${HOME}/poky-zeus/meta-openembedded/meta-networking \
+  ${HOME}/poky-zeus/meta-openembedded/meta-perl \
+  ${HOME}/poky-zeus/meta-openembedded/meta-python \
+  ${HOME}/poky-zeus/meta-security \
+  ${HOME}/atom-zeus/meta-atom \
 "

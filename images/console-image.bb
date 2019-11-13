@@ -6,6 +6,8 @@ IMAGE_LINGUAS = "en-us"
 
 inherit image
 
+PACKAGE_EXCLUDE = " rng-tools"
+
 SPLASH = "psplash-jumpnow"
 
 CORE_OS = " \
@@ -17,9 +19,11 @@ CORE_OS = " \
 "
 
 KERNEL_EXTRA = " \
+    cryptodev-module \
     kernel-modules \
     linux-firmware \
     linux-firmware-b43 \
+    load-modules \
 "
 
 WIREGUARD = " \
