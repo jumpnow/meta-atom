@@ -1,4 +1,4 @@
-# Yocto Project 2.8 Poky distribution [zeus] branch
+# Yocto Project 3.0 Poky distribution [zeus] branch
 # This is a sysvinit system
 
 # use local version, mask meta-openembedded version 
