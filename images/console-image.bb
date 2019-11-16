@@ -6,8 +6,6 @@ IMAGE_LINGUAS = "en-us"
 
 inherit image
 
-PACKAGE_EXCLUDE = " rng-tools"
-
 SPLASH = "psplash-jumpnow"
 
 CORE_OS = " \
@@ -127,6 +125,10 @@ disable_bootlogd() {
     echo BOOTLOGD_ENABLE=no > ${IMAGE_ROOTFS}/etc/default/bootlogd
 }
 
+disable_rng_daemon() {
+    rm -f ${IMAGE_ROOTFS}/etc/rcS.d/S*rng-tools
+}
+
 add_opt_dir() {
     mkdir -p ${IMAGE_ROOTFS}/opt
 }
@@ -134,6 +136,7 @@ add_opt_dir() {
 ROOTFS_POSTPROCESS_COMMAND += " \
     set_local_timezone ; \
     disable_bootlogd ; \
+    disable_rng_daemon ; \
     add_opt_dir; \
 "
 
