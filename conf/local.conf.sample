@@ -21,7 +21,7 @@ MACHINE = "s10e"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-stable"
 
-# default version is 5.0, uncomment to change
+# default version is 5.4, uncomment to change
 #PREFERRED_VERSION_linux-stable = "4.19.%"
 
 #DL_DIR = "${HOME}/oe-sources"
