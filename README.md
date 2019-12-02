@@ -17,10 +17,10 @@ This layer depends on:
 
 Latest commits:
 
-    poky 0275e68
+    poky 5d50b05
     meta-openembedded aad5b3d
     meta-security 27ddb45
-    meta-jumpnow b148cd8
+    meta-jumpnow 7462911
 
 
 meta-atom layer maintainer: Scott Ellis <scott@jumpnowtek.com>
