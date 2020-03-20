@@ -13,6 +13,7 @@ BBLAYERS ?= " \
   ${HOME}/poky-zeus/meta-openembedded/meta-perl \
   ${HOME}/poky-zeus/meta-openembedded/meta-python \
   ${HOME}/poky-zeus/meta-security \
+  ${HOME}/poky-zeus/meta-qt5 \
   ${HOME}/poky-zeus/meta-jumpnow \
-  ${HOME}/atom-zeus/meta-atom \
+  ${HOME}/atom/meta-atom \
 "

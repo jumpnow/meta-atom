@@ -1,0 +1,23 @@
+#!/bin/sh
+
+APP=/usr/bin/qfontchooser
+QTENV=/etc/profile.d/qt5-env.sh
+
+[ -x ${APP} ] || exit
+
+[ -f ${QTENV} ] && source ${QTENV}
+
+case "$1" in
+    start)
+        echo "Starting ${APP}"
+        ${APP}
+	echo "Shutting down"
+	/sbin/poweroff
+        ;;
+
+    *)
+        echo "Usage: $0 start"
+        exit 2
+        ;;
+esac
+
