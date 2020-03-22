@@ -19,4 +19,4 @@ do_install() {
 FILES_${PN} = "${sysconfdir}"
 
 # currently the gui we want
-RDEPENDS_${PN} = "qfontchooser-tools"
+RDEPENDS_${PN} = "firstedit-tools"

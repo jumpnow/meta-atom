@@ -27,8 +27,7 @@ FONTS = " \
 "
 
 TEST_APPS += " \
-    qfontchooser-tools \
-    qeditor-tools \
+    firstedit-tools \
     tspress-tools \
 "
 
