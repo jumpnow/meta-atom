@@ -1,29 +1,42 @@
+# Local configuration for meta-atom images
+# Supporting 32-bit Atom s10e netbooks
 # Yocto Project 3.0 Poky distribution [zeus] branch
 # This is a sysvinit system
 
-# use local version, mask meta-openembedded version 
+# mask wireguard from meta-openembedded/meta-networking
+# use version in meta-jumpnow to support kernels < 5.6
+# with wireguard-linux-compat
 BBMASK = "meta-networking/recipes-kernel/wireguard"
+
+# mask cryptodev from poky/meta
+# use version from meta-jumpnow to support kernels > 5.4
+BBMASK += "meta/recipes-kernel/cryptodev"
 
 LICENSE_FLAGS_WHITELIST = "commercial"
 
 DISTRO_FEATURES = "ext2 usbhost ${DISTRO_FEATURES_LIBC}"
+
+# remove pulseaudio
+DISTRO_FEATURES_BACKFILL_CONSIDERED += "pulseaudio"
 
 PREFERRED_PROVIDER_jpeg = "libjpeg-turbo"
 
 PREFERRED_PROVIDER_udev = "eudev"
 VIRTUAL_RUNTIME_init_manager = "sysvinit"
 
-# 32-bit
 MACHINE = "s10e"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-stable"
 
-# default version is 5.4, uncomment to change
-#PREFERRED_VERSION_linux-stable = "4.19.%"
+# default version is 5.6, uncomment to change
+#PREFERRED_VERSION_linux-stable = "5.4.%"
 
-#DL_DIR = "${HOME}/oe-sources"
-#SSTATE_DIR = "/oe4/atom/sstate-cache"
-#TMPDIR = "/oe4/atom/tmp-zeus"
+# uncomment for kernels < 5.6
+# WIREGUARD_COMPAT = "1"
+
+# DL_DIR = "/src/oe"
+# SSTATE_DIR = "/oe9/atom/sstate-cache"
+# TMPDIR = "/oe9/atom/tmp-zeus"
 
 DISTRO = "poky"
 PACKAGE_CLASSES = "package_ipk"
