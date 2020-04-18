@@ -17,6 +17,8 @@ IMAGE_INSTALL += " \
     psplash psplash-jumpnow \
     root-upgrader \
     ${WIFI} \
+    ${SECURITY_TOOLS} \
+    ${WIREGUARD} \
 "
 
 export IMAGE_BASENAME = "console-image"
