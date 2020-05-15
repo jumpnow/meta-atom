@@ -13,6 +13,7 @@ WIFI = " \
 "
 
 IMAGE_INSTALL += " \
+    firewall \
     grub grub-editenv \
     psplash psplash-jumpnow \
     root-upgrader \
