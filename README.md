@@ -21,6 +21,6 @@ Latest commits:
     meta-openembedded e413c1ef6
     meta-qt5 fdd1951
     meta-security d83f7cb
-    meta-jumpnow 1dda514
+    meta-jumpnow 03cf591
 
 meta-atom layer maintainer: Scott Ellis <scott@jumpnowtek.com>
