@@ -126,6 +126,26 @@ if [ -f /home/root/.ssh/authorized_keys ]; then
     fi
 fi
 
+if [ -f /home/root/firstedit.cache ]; then
+    echo "  Copying /home/root/firstedit.cache"
+    cp /home/root/firstedit.cache ${upgrade_mnt}/home/root/
+
+    if [ $? -ne 0 ]; then
+        echo "Error copying /home/root/firstedit.cache"
+        exit 1
+    fi
+fi
+
+if [ -f /home/root/firstedit.ini ]; then
+    echo "  Copying /home/root/firstedit.ini"
+    cp /home/root/firstedit.ini ${upgrade_mnt}/home/root/
+
+    if [ $? -ne 0 ]; then
+        echo "Error copying /home/root/firstedit.ini"
+        exit 1
+    fi
+fi
+
 echo "  Generating a random-seed file for urandom"
 
 mkdir -p ${upgrade_mnt}/var/lib/urandom
